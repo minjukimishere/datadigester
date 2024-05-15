@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>datadigesters</title>
+    <style>
+        /*타이틀*/
+        label {
+            display: block;
+            font: 1rem 'Fira Sans', sans-serif;
+        }
+        /*입력창*/
+        input, label {
+            margin: 0.4rem 0;
+        }
+        /*text출력 창*/
+        label, textarea {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        textarea {
+            padding: 10px;
+            max-width: 100%;
+            line-height: 1.5;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px #999;
+        }
+        #result {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!--타이틀-->
+    <h1>Datadigester</h1>
+    <!--input box-->
+    <form id="search-form">
+        <label for="site-search">무엇이 궁금하신가요?</label>
+        <input type="text" id="site-search" name="query" />
+        <button type="submit">검색</button>
+        <button type="button" id="reset-button">초기화</button>
+    </form>
+    <!--output-->
+    <label for="story">학술 논문 사이트 자료 조사 결과입니다.</label>
+    <textarea id="story" name="story" rows="5" cols="33"></textarea>
+    
+    <script>
+        document.getElementById("search-form").onsubmit = async function(event) {
+            event.preventDefault();
+            var searchInput = document.getElementById("site-search").value;
+            var response = await fetch("/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "query=" + encodeURIComponent(searchInput)
+            });
+            var result = await response.json();
+            document.getElementById("story").innerText = result.result;
+        };
+
+        document.getElementById("reset-button").onclick = function() {
+            document.getElementById("site-search").value = "";
+            document.getElementById("story").innerText = "";
+        };
+    </script>
+</body>
+</html>

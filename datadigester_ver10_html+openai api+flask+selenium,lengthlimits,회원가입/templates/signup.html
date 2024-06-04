@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #16163E, #acacdf);
+            background-color: #1a1a3c;
+            font-family: 'Fira Sans', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 200px;
+        }
+        .button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 10px;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff6347;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>회원가입</h1>
+        <form id="signup-form">
+            <input type="text" id="new-username" name="username" placeholder="아이디" required><br>
+            <input type="password" id="new-password" name="password" placeholder="비밀번호" required><br>
+            <button class="button" type="submit">회원가입</button>
+        </form>
+        <div class="message" id="signup-message"></div>
+        <button class="back-button" onclick="location.href='/login'">뒤로가기</button>
+    </div>
+    <script>
+        document.getElementById("signup-form").onsubmit = async function(event) {
+            event.preventDefault();
+            var username = document.getElementById("new-username").value;
+            var password = document.getElementById("new-password").value;
+            var response = await fetch("/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+            var result = await response.json();
+            document.getElementById("signup-message").innerText = result.message;
+            if (result.success) {
+                setTimeout(function() {
+                    location.href = "/login";
+                }, 2000);
+            }
+        };
+    </script>
+</body>
+</html>
+

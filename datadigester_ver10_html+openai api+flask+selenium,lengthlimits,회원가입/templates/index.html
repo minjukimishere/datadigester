@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datadigesters</title>
+    <style>
+        body{
+            background: linear-gradient(to right
+            ,#16163E,#acacdf);
+            background-color: #1a1a3c;
+        }
+        h1{
+            color: white;
+        }
+        input{
+            border: 2px solid black;
+        }
+        /*타이틀*/
+        label {
+            display: block;
+            font:
+                1rem 'Fira Sans',
+                sans-serif; 
+            color: white;
+            }
+            /*입력창*/
+            input,label {
+            margin: 0.3rem 0;
+            position: relative;
+            left: 10%;
+            width: 50%;
+            height: 40px;
+            border-radius: 5%;
+            
+            }
+            label{
+                top: 20px;
+                
+            }
+            /*text출력 창*/
+            label,textarea {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            
+            }
+
+            textarea {
+            padding: 10px;
+            max-width: 100%;
+            line-height: 1.5;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px #999;
+            position: relative;
+            left: 10%;
+            width: 65%;
+            border: 3px solid black;
+            
+            }
+
+            #result{
+            display: block;
+            margin-bottom: 10px;
+            
+            }
+            button{
+                position: relative;
+                left: 10%;
+                width: 100px;
+                height: 40px;
+                border-radius: 10%;
+                background-color: black;
+                border: 2px solid black;
+                color: white;
+            }
+   
+    </style>
+
+</head>
+<body>
+     <!--타이틀-->
+     <h1>Datadigester</h1>
+     <!--input box-->
+     <form id="search-form">
+        <label for="site-search">무엇이 궁금하신가요?</label>
+        <input type="text" id="site-search" name="query" />
+        <button type="submit">검색</button>
+        <button type="button" id="reset-button">초기화</button>
+    </form>
+     <!--output-->
+     <label for="story">학술 논문 사이트 자료 조사 결과입니다.</label>
+     <textarea id="story" name="story" rows="30" cols="33"></textarea>
+     <!-- Word and PDF buttons -->
+    <button type="button" id="word-button">Word 파일 <br /> 생성</button>
+    <button type="button" id="pdf-button">PDF 파일 <br / > 생성</button>
+ 
+     <script>
+        document.getElementById("search-form").onsubmit = async function(event) {
+            event.preventDefault();
+            var searchInput = document.getElementById("site-search").value;
+            var response = await fetch("/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "query=" + encodeURIComponent(searchInput)
+            });
+            var result = await response.json();
+            document.getElementById("story").innerText = result.result;
+        };
+
+        document.getElementById("reset-button").onclick = function() {
+            document.getElementById("site-search").value = "";
+            document.getElementById("story").innerText = "";
+        };
+
+        document.getElementById("word-button").onclick = function() {
+            var text = document.getElementById("story").value;
+            var blob = new Blob([text], { type: "application/msword" });
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "result.doc";
+            link.click();
+        };
+
+        document.getElementById("pdf-button").onclick = function() {
+            var text = document.getElementById("story").value;
+            var pdfWindow = window.open("", "_blank");
+            pdfWindow.document.write("<html><head><title>PDF</title></head><body>");
+            pdfWindow.document.write("<pre>" + text + "</pre>");
+            pdfWindow.document.write("</body></html>");
+            pdfWindow.document.close();
+            pdfWindow.print();
+        };
+    </script>
+     
+
+</body>
+</html>

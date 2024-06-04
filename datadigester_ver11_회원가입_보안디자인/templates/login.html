@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #16163E, #acacdf);
+            background-color: #1a1a3c;
+            font-family: 'Fira Sans', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 200px;
+        }
+        .button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>로그인</h1>
+        <form id="login-form" method="POST">
+            <input type="text" id="username" name="username" placeholder="아이디" required><br>
+            <input type="password" id="password" name="password" placeholder="비밀번호" required><br>
+            <button class="button" type="submit" value="login">로그인</button>
+        </form>
+        <div class="error" id="error-message"></div>
+    </div>
+</body>
+</html>

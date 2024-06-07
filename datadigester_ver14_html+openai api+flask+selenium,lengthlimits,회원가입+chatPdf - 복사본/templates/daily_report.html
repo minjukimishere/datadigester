@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datadigesters - Daily Report</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #16163E, #acacdf);
+            background-color: #1a1a3c;
+            color: white;
+            font-family: 'Fira Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        #report-form {
+            display: flex;
+            align-items: center;
+        }
+        input, button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 0 10px;
+        }
+        button {
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+        textarea {
+            width: 60%;
+            height: 300px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: none;
+            outline: none;
+            color: black;
+            background-color: white;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            width: 60%;
+            margin-top: 10px;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datadigester - Daily Report</h1>
+    <form id="report-form">
+        <input type="text" id="report-search" name="report_query" placeholder="오늘의 주제는 무엇인가요?" />
+        <button type="submit">검색</button>
+        <button type="button" id="reset-button" onclick="document.getElementById('report').value = '';">초기화</button>
+    </form>
+    <textarea id="report" name="report"></textarea>
+    <div class="button-row">
+        <button type="button" id="word-button">Word 파일 생성</button>
+        <button type="button" id="pdf-button">PDF 파일 생성</button>
+    </submit>
+    
+    <script>
+        document.getElementById('report-form').onsubmit = async function(event) {
+            event.preventDefault();
+            const query = document.getElementById('report-search').value;
+            const response = await fetch('/some-endpoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query })
+            });
+            const data = await response.json();
+            document.getElementById('report').value = data.result;
+        };
+    
+        document.getElementById("word-button").onclick = function() {
+            var text = document.getElementById("report").value;
+            var blob = new Blob([text], { type: "application/msword" });
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "report.doc";
+            link.click();
+        };
+    </script>
+</body>
+</html>

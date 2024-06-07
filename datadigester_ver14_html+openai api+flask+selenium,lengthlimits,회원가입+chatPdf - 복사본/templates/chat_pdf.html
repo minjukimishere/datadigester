@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datadigesters</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #16163E, #acacdf);
+            background-color: #1a1a3c;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: white;
+        }
+        h2 {
+            color: white;
+        }
+        input {
+            border: 2px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            width: calc(50% - 22px);
+            margin: 0.3rem 0;
+            display: block;
+            font-size: 1rem;
+        }
+        label {
+            display: block;
+            font: 1rem 'Fira Sans', sans-serif;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        textarea {
+            padding: 10px;
+            max-width: 100%;
+            line-height: 1.5;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px #999;
+            width: calc(65% - 22px);
+            border: 3px solid #ccc;
+            font-size: 1rem;
+            color: white;
+            background-color: #000;
+        }
+        textarea::placeholder {
+            color: transparent;
+        }
+        #result {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 120px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: #333;
+            border: 2px solid #333;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 20px;
+        }
+        button:hover {
+            background-color: white;
+            color: #333;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 150px;
+            height: auto;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 1rem;
+        }
+        .form-group input[type="file"], .form-group input[type="text"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 타이틀 -->
+    <h1>Datadigester</h1>
+    <!-- PDF 업로드 폼 -->
+    <h2>PDF 업로드</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="file" name="file" accept="application/pdf">
+        </div>
+    </form>
+    <!-- 질문 폼 -->
+<h2>질문하기</h2>
+<form action="/ask-question" method="post">
+    <label for="question">무엇이 궁금하신가요?</label>
+    <div class="form-group">
+        <input type="text" id="question" name="question" placeholder="여기에 질문을 입력하세요">
+        <button type="submit">제출</button>
+    </div>
+</form>
+
+<!-- 답변 표시 -->
+<h2>답변</h2>
+<textarea id="answer" name="answer" rows="10" cols="50" placeholder="">{{ answer }}</textarea>
+</body>
+</html>
